@@ -1,0 +1,16 @@
+.quixnav {
+  height: 100% !important;
+  min-height: 90vh !important;
+}
+
+@media (max-width: 800px) {
+  .quixnav {
+    width: 3.75rem;
+      overflow: visible;
+      position: absolute;
+  }
+  .quixnav .nav-text, .quixnav .metismenu .first{
+    display: none;
+  }
+}
+

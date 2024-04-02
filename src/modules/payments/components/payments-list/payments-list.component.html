@@ -1,0 +1,100 @@
+<div class="row page-titles mx-0">
+  <div class="col-sm-6 p-md-0">
+    <div class="welcome-text">
+      <h4>Pagos</h4>
+      <p class="mb-1">Pagos Registrados</p>
+    </div>
+  </div>
+  <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+    <!-- <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
+      <li class="breadcrumb-item active"><a href="javascript:void(0)">Validation</a></li>
+    </ol> -->
+    <button (click)="goToAdd()" class="btn btn-primary btn-sl-sm mr-3" type="button"><span class="mr-2"><i
+          class="fa fa-plus"></i></span>
+      Nuevo registro</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-3 col-sm-6">
+    <div class="card">
+      <div class="stat-widget-two card-body">
+        <div class="stat-content">
+          <div class="stat-text">Pagos completos</div>
+          <div class="stat-digit"> <i class="fa fa-money"></i>{{metrics.completed}}</div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar progress-bar-success w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-6">
+    <div class="card">
+      <div class="stat-widget-two card-body">
+        <div class="stat-content">
+          <div class="stat-text">Pagos Electronicos</div>
+          <div class="stat-digit"> <i class="fa fa-money"></i>{{metrics.electronic}}</div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar progress-bar-primary w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-6">
+    <div class="card">
+      <div class="stat-widget-two card-body">
+        <div class="stat-content">
+          <div class="stat-text">Pagos en Efectivo</div>
+          <div class="stat-digit"> <i class="fa fa-money"></i> {{metrics.cash}}</div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar progress-bar-warning w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-sm-6">
+    <div class="card">
+      <div class="stat-widget-two card-body">
+        <div class="stat-content">
+          <div class="stat-text">Pagos pendientes</div>
+          <div class="stat-digit"> <i class="fa fa-money"></i>{{metrics.pending}}</div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar progress-bar-danger w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+            aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+    <!-- /# card -->
+  </div>
+  <!-- /# column -->
+</div>
+
+
+<div class="row">
+
+  <div class="col-12">
+    <div class="card">
+      <!-- <div class="card-header">
+        <h4 class="card-title">Lista</h4>
+      </div> -->
+      <div class="card-body">
+        <div style="width: 100%; height: 100%;">
+
+          <app-table-terra [rowData]="Payments" [idTable]="2" (deleteRow)="deletePayment($event)"></app-table-terra>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-loader [showLoader]="showLoader"></app-loader>

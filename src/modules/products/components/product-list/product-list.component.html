@@ -1,0 +1,38 @@
+<div class="row page-titles mx-0">
+  <div class="col-sm-6 p-md-0">
+    <div class="welcome-text">
+      <h4>Productos</h4>
+      <p class="mb-1">Produtos Registrados</p>
+    </div>
+  </div>
+  <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+    <!-- <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
+      <li class="breadcrumb-item active"><a href="javascript:void(0)">Validation</a></li>
+    </ol> -->
+    <button (click)="goToAdd()" class="btn btn-primary btn-sl-sm mr-3" type="button"><span class="mr-2"><i
+          class="fa fa-plus"></i></span>
+      Nuevo registro</button>
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-12">
+    <div class="card">
+      <!-- <div class="card-header">
+        <h4 class="card-title">Lista</h4>
+      </div> -->
+      <div class="card-body">
+        <div style="width: 100%; height: 100%;">
+
+          <app-table-terra [rowData]="Products" [idTable]="3" (deleteRow)="deleteProduct($event)"></app-table-terra>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-loader [showLoader]="showLoader"></app-loader>

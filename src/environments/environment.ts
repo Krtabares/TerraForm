@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  routerBase: 'https://terraformapi-production.up.railway.app/api',
+  // routerBase: 'http://localhost:3000/api',
+  routerImg: 'http://localhost:3000/images/',
 };
 
 /*

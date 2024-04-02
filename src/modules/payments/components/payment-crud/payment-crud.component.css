@@ -1,0 +1,5 @@
+.paymentDetailContainer {
+  max-height: 90vh;
+  overflow: auto;
+  /* o scroll */
+}

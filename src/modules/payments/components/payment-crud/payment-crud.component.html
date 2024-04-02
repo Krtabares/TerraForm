@@ -1,0 +1,152 @@
+<div class="row page-titles mx-0">
+  <div class="col-sm-6 p-md-0">
+    <div class="welcome-text">
+      <h4>Pagos</h4>
+      <p class="mb-1">nuevo registro</p>
+    </div>
+  </div>
+  <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+    <!-- <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
+      <li class="breadcrumb-item active"><a href="javascript:void(0)">Validation</a></li>
+    </ol> -->
+    <button *ngIf="viewType == 'edit'" (click)="deletePayment()" class="btn btn-danger btn-sl-sm mr-3"
+      type="button"><span class="mr-2"><i class="fa fa-trash"></i></span>
+      Eliminar</button>
+    <button type="button" (click)="goBack()" class="btn btn-warning">{{'salir'}}</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Informacion de pago</h4>
+      </div>
+      <div class="card-body row">
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3"> <span class="text-muted">Detalle de pago</span>
+             <span *ngIf="paymentDetail.length > 0" class="badge badge-secondary badge-pill">{{paymentDetail.length}}</span> </h4>
+          <div class="paymentDetailContainer">
+            <ul class="list-group mb-3">
+              <li *ngFor="let item of paymentDetail"  class="list-group-item d-flex justify-content-between lh-condensed">
+                <div>
+                  <h6 class="my-0">{{item.Name}}</h6>
+                  <small class="text-muted">{{item.Description}}</small>
+                </div>
+                <span class="text-muted">{{item.Amount}}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between"> <span>Total (USD)</span> <strong>${{totalUSD}}</strong> </li>
+            </ul>
+          </div>
+          <!-- <form class="card p-2">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Código promocional">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-secondary">Redimir</button>
+              </div>
+            </div>
+          </form> -->
+        </div>
+        <div class="col-md-8 order-md-1">
+          <!-- <h4 class="mb-3">Dirección de Envio</h4> -->
+          <form class="needs-validation" novalidate="" [formGroup]="formPayment">
+            <div class="mb-3">
+              <label for="Student">Estudiante</label>
+              <select class="custom-select d-block w-100" id="Student" required="" formControlName="Student" >
+                <option value="" selected>Elegir...</option>
+                <option *ngFor="let student of studentsSelect" [value]="student.UUID" >{{student.Name}}</option>
+              </select>
+              <div class="invalid-feedback">
+                {{ validatorOfInput('Student') }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="Student">Estatus</label>
+              <select class="custom-select d-block w-100" id="Student" required="" formControlName="Status">
+                <option value="" selected>Elegir...</option>
+                <option value="1" >Pendiente</option>
+                <option value="2">Completado</option>
+              </select>
+              <div class="invalid-feedback">
+                {{ validatorOfInput('Status') }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="PaymentDate">Fecha de Pago <span class="text-muted">(Opcional)</span></label>
+              <input type="date" class="form-control" id="PaymentDate" formControlName="PaymentDate" placeholder="dd/mm/yyyy">
+            </div>
+
+            <hr class="mb-4">
+            <h4 class="mb-3">Descripcion de pago</h4>
+            <div class="custom-control custom-checkbox" *ngFor="let product of products" >
+              <input type="checkbox" class="custom-control-input" id="{{product.UUID}}"  (change)="onCheckChange($event,product)" [checked]="validateCheck(product)" >
+              <label class="custom-control-label" for="{{product.UUID}}">{{product.Name}}</label>
+            </div>
+
+            <!-- <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="description3"
+                (change)="onCheckChange($event, {})">
+              <label class="custom-control-label" for="description3">Otro</label>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName">Descripción</label>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                <div class="invalid-feedback">
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="lastName">Monto</label>
+                <input type="number" class="form-control" id="lastName" placeholder="" value="" required="">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+            </div> -->
+            <hr class="mb-4">
+            <h4 class="mb-3">Tipo de pago</h4>
+            <div class="d-block my-3">
+              <div class="custom-control custom-radio">
+                <input formControlName="PaymentType" id="credit" name="PaymentType" type="radio" class="custom-control-input" checked="" value="POS" (change)="onRadioChange($event)" required="">
+                <label class="custom-control-label" for="credit">Punto de venta</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input  formControlName="PaymentType" id="debit" name="PaymentType" type="radio" class="custom-control-input" value="cash" (change)="onRadioChange($event)" required="">
+                <label class="custom-control-label" for="debit">Efectivo</label>
+              </div>
+              <div class="custom-control custom-radio">
+                <input  formControlName="PaymentType" id="paypal" name="PaymentType" type="radio" class="custom-control-input" value="electronic" (change)="onRadioChange($event)" required="">
+                <label class="custom-control-label" for="paypal">Pago Movil / Transferencia</label>
+              </div>
+              <div class="invalid-feedback">
+              {{ validatorOfInput('PaymentType') }}
+              </div>
+            </div>
+            <div *ngIf="paymenType=='electronic'" class="row">
+              <div class="col-md-12 mb-3">
+                <label for="cc-name">Referencia</label>
+                <input type="text" class="form-control" id="cc-name" placeholder="" required="">
+                <small class="text-muted">Agregar referencia</small>
+                <div class="invalid-feedback">
+                  reference is required
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+        <hr class="mb-4">
+        <div class="form-group row">
+          <div class="col d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" style="margin-right: 24px;" (click)="sendForm()"> {{btnlabel}}</button>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<app-loader [showLoader]="showLoader"></app-loader>

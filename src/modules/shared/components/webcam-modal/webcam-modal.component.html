@@ -1,0 +1,30 @@
+<!-- <webcam class="rounded-circle" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
+
+<button (click)="triggerSnapshot();">Capturar Imagen</button> -->
+
+
+<div *ngIf="!errorDevice" class="btn btn-primary btn-rounded" (click)="toggleModal()">
+  <label class="form-label text-white m-1" >Tomar foto</label>
+</div>
+
+<div *ngIf="showModal" class="modal fade show" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="padding-right: 15px; display: block;">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tomar Foto</h5>
+        <button type="button" class="close" (click)="toggleModal()" data-dismiss="modal"><span>×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <webcam class="rounded-circle" [width]="450" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" (initError)="handleInitError($event)" ></webcam>
+        <h4 *ngIf="errorDevice"><span>{{errorMessage}}</span></h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="toggleModal()" data-dismiss="modal">Cerrar</button>
+        <button *ngIf="!errorDevice" type="button" (click)="triggerSnapshot()" class="btn btn-primary">Capturar Imagen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModal" class="modal-backdrop fade show"></div>
