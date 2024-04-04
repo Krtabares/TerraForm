@@ -53,5 +53,11 @@
   margin-bottom: 23px;
 }
  .logo{
-      max-width: 320px;
+      max-width: 220px;
+ }
+
+ @media (max-width: 390px) {
+  .logo{
+    display: none !important;
+  }
  }

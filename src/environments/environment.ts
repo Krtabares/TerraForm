@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  routerBase: 'https://terraformapi-production.up.railway.app/api',
-  // routerBase: 'http://localhost:3000/api',
+  // routerBase: 'https://terraformapi-production.up.railway.app/api',
+  routerBase: 'http://localhost:3000/api',
   routerImg: 'http://localhost:3000/images/',
 };
 
