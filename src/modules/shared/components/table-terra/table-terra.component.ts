@@ -28,6 +28,7 @@ export class TableTerraComponent implements OnInit {
   defaultColDef: ColDef = {
     filter: "agTextColumnFilter",
     floatingFilter: true,
+    minWidth: 150,
   };
   public autoSizeStrategy:
     | SizeColumnsToFitGridStrategy

@@ -2,15 +2,28 @@
   height: 100% !important;
   min-height: 90vh !important;
 }
+  .showMenu{
+    display: none;
+  }
+
 
 @media (max-width: 800px) {
   .quixnav {
-    width: 3.75rem;
+    /* width: 3.75rem; */
       overflow: visible;
       position: absolute;
+      /* left: -100%; */
+      display: none;
   }
-  .quixnav .nav-text, .quixnav .metismenu .first{
+  .showMenu{
+    /* left:0 !important */
+    display: block;
+  }
+  /* .quixnav .nav-text, .quixnav .metismenu .first{
     display: none;
-  }
+  } */
+    /* .quixnav .metismenu>li a>i{
+      padding: 0px;
+    } */
 }
 

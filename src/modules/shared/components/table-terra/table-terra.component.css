@@ -1,0 +1,10 @@
+
+
+@media (max-width: 800px) {
+  .ag-paging-row-summary-panel {
+      display: none !important;
+    }
+  .ag-paging-panel>*{
+    margin: 0px !important;
+  }
+}

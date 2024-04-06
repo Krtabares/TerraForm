@@ -8,8 +8,8 @@
     <img class="brand-title" src="assets/images/logo-text.png" alt="">
   </a>
 
-  <div class="nav-control">
-    <div class="hamburger">
+  <div class="nav-control" (click)="toggleSidebarMenu()">
+    <div class="hamburger {{ showSidebarMenu? 'is-active':'' }}">
       <span class="line"></span><span class="line"></span><span class="line"></span>
     </div>
   </div>

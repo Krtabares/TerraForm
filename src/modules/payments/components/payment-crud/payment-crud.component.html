@@ -34,7 +34,7 @@
                   <h6 class="my-0">{{item.Name}}</h6>
                   <small class="text-muted">{{item.Description}}</small>
                 </div>
-                <span class="text-muted">{{item.Amount}}</span>
+                <span class="text-muted">{{item.AmountString}}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between"> <span>Total (USD)</span> <strong>${{totalUSD}}</strong> </li>
             </ul>
@@ -79,9 +79,15 @@
 
             <hr class="mb-4">
             <h4 class="mb-3">Descripcion de pago</h4>
-            <div class="custom-control custom-checkbox" *ngFor="let product of products" >
-              <input type="checkbox" class="custom-control-input" id="{{product.UUID}}"  (change)="onCheckChange($event,product)" [checked]="validateCheck(product)" >
-              <label class="custom-control-label" for="{{product.UUID}}">{{product.Name}}</label>
+            <div class="row ml-2">
+              <div class="custom-control custom-checkbox col-md-6 col-md-lg col-sm-12" *ngFor="let product of products" >
+                  <input type="checkbox" class="custom-control-input" id="{{product.UUID}}"  (change)="onCheckChange($event,product)" [checked]="validateCheck(product)" >
+                  <label class="custom-control-label" for="{{product.UUID}}">{{product.Name}}</label>
+
+              </div>
+              <div class="invalid-feedback">
+                {{ validatorOfInput('Description') }}
+              </div>
             </div>
 
             <!-- <div class="custom-control custom-checkbox">

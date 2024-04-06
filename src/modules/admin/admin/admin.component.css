@@ -1,5 +1,25 @@
 @media (max-width: 800px) {
   .content-body{
-    margin-left: 57px;
+    margin-left: 1px !important;
+  }
+  .menuIsShow {
+    margin-left: 1px !important;
   }
 }
+
+@media (min-width: 801px) {
+  .content-body {
+    margin-left: 1px !important;
+  }
+
+  .menuIsShow {
+    margin-left: 17.1875rem !important;
+  }
+}
+
+/* .menuIsShow{
+  margin-left: 17.1875rem !important;
+}
+.content-body{
+  margin-left: 1px;
+} */

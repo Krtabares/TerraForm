@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin/admin.component';
 import { SharedModule } from '../shared/shared.module';
+import {  httpInterceptorProviders } from '../shared/helpers/terra-interceptor.interceptor';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     AdminRoutingModule,
     SharedModule
-  ]
+  ],
+  // providers: [httpInterceptorProviders],
 })
 export class AdminModule { }

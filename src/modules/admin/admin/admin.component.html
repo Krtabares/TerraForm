@@ -1,7 +1,7 @@
 <!-- <div id="main-wrapper" class="show menu-toggle"> -->
   <app-header></app-header>
   <app-sidebar></app-sidebar>
-  <div class="content-body">
+  <div class="content-body {{menuIsShow? 'menuIsShow':''}}">
     <div class="container-fluid pt-4">
       <router-outlet></router-outlet>
     </div>

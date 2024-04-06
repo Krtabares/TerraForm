@@ -18,7 +18,7 @@ export class AuthService {
     // sessionStorage.setItem('navigate', JSON.stringify({ nameNavigate: 'Dashboard' }));
     // sessionStorage.setItem('navigate2', JSON.stringify({ nameNavigate2: '', isLevel2: false }));
 
-    return this.http.post(environment.routerBase + '/auth/login', form);
+    return this.http.post(environment.routerBase + '/auth/login', form, { withCredentials: true, });
   }
 
   logOut() {
@@ -46,5 +46,10 @@ export class AuthService {
     } else {
       return this.user;
     }
+  }
+
+  refreshToken() {
+    // Realiza una solicitud HTTP para renovar el token
+    return this.http.post(environment.routerBase + '/auth/token/decode', {});
   }
 }

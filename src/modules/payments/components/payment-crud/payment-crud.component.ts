@@ -47,7 +47,6 @@ export class PaymentCrudComponent implements OnInit {
   loadStudentsSelect() {
     this.showLoader = true
     this._service.getResources().subscribe((res: any) => {
-      console.log(res)
       let result = res
       this.studentsSelect = result.students
       this.products = result.products
@@ -130,7 +129,7 @@ export class PaymentCrudComponent implements OnInit {
         this.alert.success('Registro Actualizado', 'Se ha actualizado el registro');
         this._service.updPayment({ payment: data, products: this.paymentDetail }).subscribe(
           async (res: any) => {
-            console.log(res);
+            // console.log(res);
 
             // this.router.navigate([`/students`]);
             this.showLoader = false

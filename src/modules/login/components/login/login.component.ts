@@ -28,12 +28,13 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.auth.login(this.loginForm.value).subscribe((res: any) => {
         console.log(res);
+        // console.log('response headers', res.headers.keys())
 
         if (res.msg == 'usuario no encontrado') {
           this.alert.warning("Datos Invalidos", "El usuario o la contraseña no son correctos")
         } else {
-          console.log(res);
-
+          // console.log(res);
+          localStorage.setItem("refreshToken", res.refreshToken);
           localStorage.setItem("token_user_access", res.token);
           localStorage.setItem("remember_user", JSON.stringify({ value: this.loginForm.get("RememberMe").value }));
           this.auth.setUser(res['user']);

@@ -28,7 +28,8 @@
               "src/assets/css/style.css",
               "node_modules/ag-grid-community/styles/ag-grid.min.css",
               "node_modules/ag-grid-community/styles/ag-theme-quartz.css",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/animate.css/animate.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

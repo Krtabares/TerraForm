@@ -37,7 +37,7 @@ export class StudentsListComponent implements OnInit {
   loadAnalytics() {
     this.showLoader = true
     this._service.getAnalytics().subscribe((res: any) => {
-      console.log(res)
+      // console.log(res)
       this.metrics = res
       this.showLoader = false
     })

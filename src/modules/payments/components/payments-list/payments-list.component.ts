@@ -27,7 +27,7 @@ export class PaymentsListComponent implements OnInit {
   getList() {
     this.showLoader = true
     this._service.getPayments().subscribe((res: any) => {
-      console.log(res)
+      // console.log(res)
       this.Payments = res
       this.showLoader = false
     })
@@ -37,7 +37,7 @@ export class PaymentsListComponent implements OnInit {
   loadAnalytics() {
     this.showLoader = true
     this._service.getAnalytics().subscribe((res: any) => {
-      console.log(res)
+      // console.log(res)
       this.metrics = res
       this.showLoader = false
     })
