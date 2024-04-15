@@ -37,5 +37,14 @@ export class PaymentService extends GlobalService {
     this.prepareTokenHeader();
     return this.http.get(environment.routerBase + `/payments/resources`, { headers: this.headers });
   }
+  deleteDiscount(data){
+    this.prepareTokenHeader();
+    return this.http.post(environment.routerBase + '/payments/deleteDiscount', data, { headers: this.headers });
+  }
+  getLevelsbyStudents(uuid){
+    this.prepareTokenHeader();
+    return this.http.get(environment.routerBase + `/registration/LvlByStudent/` + uuid, { headers: this.headers });
+  }
+
 
 }

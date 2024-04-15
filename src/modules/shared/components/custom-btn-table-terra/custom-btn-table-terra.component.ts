@@ -15,6 +15,7 @@ export class CustomBtnTableTerraComponent implements ICellRendererComp {
   @Input() buttonText: string; // Recibe el parámetro
   @Input() uuid: string; // Recibe el ID
   moduleTerra:string;
+  onlyDelete:boolean=false;
   getGui(): HTMLElement {
     throw new Error('Method not implemented.');
   }
@@ -29,6 +30,7 @@ export class CustomBtnTableTerraComponent implements ICellRendererComp {
     this.buttonText = this.params.buttonText
     this.uuid = this.params.UUID
     this.moduleTerra = this.params.moduleTerra
+    this.onlyDelete = this.params.onlyDelete ? this.params.onlyDelete: false
     // console.log(this.params);
 
    }

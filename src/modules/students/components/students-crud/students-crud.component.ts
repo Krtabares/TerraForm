@@ -25,7 +25,8 @@ export class StudentsCrudComponent implements OnInit {
   viewType = 'add'
   btnlabel = "Agregar"
   base64Data =''
-
+  levelsByStudent=[]
+  paymentsByStudents=[]
   selectedFile: File = null;
   imagePreview: string | ArrayBuffer = "https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg";
 
@@ -60,8 +61,11 @@ export class StudentsCrudComponent implements OnInit {
   loadStudent() {
     this.showLoader = true
       this._service.getStudentsByUuid(this.uuid).subscribe((res:any)=>{
-        console.log(res)
-        this.setFormStudent(res)
+        // console.log(res)
+        let result = res
+        this.setFormStudent(result.student)
+        this.levelsByStudent = result.levels
+        this.paymentsByStudents = result.payments
         this.showLoader = false
       })
 
@@ -121,6 +125,7 @@ export class StudentsCrudComponent implements OnInit {
           async (res: any) => {
             this.alert.success('Registro Creado', 'Se ha creado el registro');
             this.showLoader = false
+            this.goBack()
           },
           e => {
             console.log(e);

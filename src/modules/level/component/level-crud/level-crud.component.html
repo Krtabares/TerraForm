@@ -1,0 +1,163 @@
+<div class="row page-titles mx-0">
+  <div class="col-sm-6 p-md-0">
+    <div class="welcome-text">
+      <h4>Curso</h4>
+      <p class="mb-1">nuevo registro</p>
+    </div>
+  </div>
+  <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+    <!-- <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
+      <li class="breadcrumb-item active"><a href="javascript:void(0)">Validation</a></li>
+    </ol> -->
+      <button *ngIf="viewType == 'edit'" (click)="toggleModal()" class="btn btn-primary btn-sl-sm mr-3" type="button"><span
+          class="mr-2"><i class="fa fa-check"></i></span>
+        Registrar participante</button>
+    <button *ngIf="viewType == 'edit'" (click)="deleteProduct()" class="btn btn-danger btn-sl-sm mr-3"
+      type="button"><span class="mr-2"><i class="fa fa-trash"></i></span>
+      Eliminar</button>
+    <button type="button" (click)="goBack()" class="btn btn-warning">{{'salir'}}</button>
+  </div>
+</div>
+<form class="form-valide" [formGroup]="formLevel">
+  <div class="row">
+    <div class="col-12 col-lg-8">
+      <!-- Product Information -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-tile mb-0">Información del Curso</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <div class="form-group ">
+              <label class="form-label" for="Name">Nombre</label>
+              <input type="text" class="form-control" id="Name" placeholder="Nombre" formControlName="Name" name="Name"
+                aria-label="Product title">
+            </div>
+          </div>
+          <div class="mb-3">
+            <!-- <div class="col">
+              <div class="form-group ">
+                <label class="form-label" for="amount">Monto</label>
+                <input type="text" class="form-control" id="amount" placeholder="$10" name="Amount" formControlName="Amount"
+                  aria-label="amount">
+              </div>
+            </div> -->
+            <div class="">
+              <div class="form-group ">
+                <label class="form-label" for="Description">Descripción</label>
+                <input type="text" class="form-control" id="Description" placeholder="Descripción del producto"
+                  formControlName="Description" name="Description" aria-label="Description">
+              </div>
+            </div>
+          </div>
+          <!-- Description -->
+          <!-- <div class="row">
+            <div class="col">
+              <div class="form-group ">
+                <label for="Observation">Observaciones
+
+                </label>
+
+                <input type="text" class="form-control" id="Observation" name="Observation"
+                  formControlName="Observation" placeholder="">
+
+              </div>
+            </div>
+          </div> -->
+
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <!-- Pricing Card -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Precio</h5>
+        </div>
+        <div class="card-body">
+          <!-- Base Price -->
+          <div class="form-group ">
+            <label class="form-label" for="amount">Monto</label>
+            <input type="text" class="form-control" id="amount" placeholder="$10" name="Amount" formControlName="Amount"
+              aria-label="amount">
+          </div>
+
+          <div class="form-group ">
+            <label for="Status">Estado
+              <span class="text-danger">*</span>
+            </label>
+
+            <select class="form-control" id="Status" name="Status" formControlName="Status">
+              <option value="">Please select</option>
+              <option value="1">Activo</option>
+              <option value="2">inactivo</option>
+            </select>
+
+          </div>
+        </div>
+      </div>
+      <!-- /Pricing Card -->
+    </div>
+
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Estudiantes Inscritos</h5>
+        </div>
+        <div class="card-body">
+
+          <app-table-terra [rowData]="StudentsBylevel" [idTable]="5" (deleteRow)="deleteRegistrationStudent($event)"></app-table-terra>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class=" col-lg-12">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="">
+            <div class="col d-flex justify-content-end">
+              <button type="button" class="btn btn-primary" (click)="sendForm()">{{btnlabel}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+<div *ngIf="showModal" class="modal fade show" id="exampleModalCenter" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true" style="padding-right: 15px; display: block;">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Registrar participante</h5>
+        <button type="button" class="close" (click)="toggleModal()" data-dismiss="modal"><span>×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-valide" [formGroup]="formStudent">
+          <div class="mb-3">
+            <label for="Student">Estudiante</label>
+            <select class="custom-select d-block w-100" id="Student" (change)="selectStudent($event)" required="" formControlName="UUID" >
+              <option value="" selected>Elegir...</option>
+              <option *ngFor="let student of studentsSelect" [value]="student.UUID">{{student.Name}}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="toggleModal()" data-dismiss="modal">Cerrar</button>
+        <button *ngIf="!errorDevice" type="button" (click)="registreStudent()" class="btn btn-primary">Registrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModal" class="modal-backdrop fade show"></div>

@@ -13,16 +13,12 @@ export class GlobalService {
 
   public prepareTokenHeader() {
 
-    console.log("this.cookieService.getAll()",this.cookieService.getAll())
 
     let item = localStorage.getItem("token_user_access") ? localStorage.getItem("token_user_access") : 'no_token';
     let refreshtoken = localStorage.getItem("refreshToken") ? localStorage.getItem("refreshToken") : 'no_token';
     this.headers = new HttpHeaders()
     .append("authorization", `Bearer ${item}`)
     this.headers = this.headers.append("refreshToken", refreshtoken);
-    console.log(this.headers);
-
-    // this.headers.set("refreshToken", this.cookieService.get('refreshToken'))
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from 'src/modules/shared/services/alerts.service';
@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./payment-crud.component.css']
 })
 export class PaymentCrudComponent implements OnInit {
+  @ViewChild('discountInput', { static: true }) discountInput: ElementRef;
   // Formularios
   formPayment: FormGroup; // Formulario
   formHasBeenSave = false
@@ -22,10 +23,17 @@ export class PaymentCrudComponent implements OnInit {
   studentsSelect = []
   paymentDetail = []
   products=[]
+  levels = []
+  months =[]
+  discount = 0
+  totalUSD = 0
+  PaymentDescription = ''
+  productsOnPayments = []
+
   constructor(private _service: PaymentService, private router: Router, private route: ActivatedRoute, private alert: AlertService) {
     this.createForm()
     this.subscribeChangeForm()
-    this.loadStudentsSelect()
+    this.loadSelects()
    }
 
   ngOnInit(): void {
@@ -44,15 +52,16 @@ export class PaymentCrudComponent implements OnInit {
     });
   }
 
-  loadStudentsSelect() {
+  loadSelects() {
     this.showLoader = true
     this._service.getResources().subscribe((res: any) => {
       let result = res
       this.studentsSelect = result.students
       this.products = result.products
+      this.levels = result.levels
+      this.months = result.months
       this.showLoader = false
     })
-
   }
 
   subscribeChangeForm() {
@@ -79,13 +88,28 @@ export class PaymentCrudComponent implements OnInit {
     this.formPayment.get('PaymentDate').patchValue(Payment.PaymentDate)
     this.formPayment.get('Observation').patchValue(Payment.Observation)
     this.formPayment.get('UUID').patchValue(Payment.UUID)
-    this.formPayment.get('PaymentType').patchValue(Payment.PaymentType)
+    this.formPayment.get('PaymentMethod').patchValue(Payment.PaymentMethod)
+    this.formPayment.get('PaymentType').patchValue(Payment.PaymentType.toString())
     this.formPayment.get('Reference').patchValue(Payment.Reference)
     this.formPayment.get('Create_at').patchValue(Payment.Create_at)
     this.formPayment.get('Description').patchValue(Payment.Description)
     this.formPayment.get('Status').patchValue(Payment.Status)
-    this.totalUSD = Payment.Amount
-    this.paymentDetail = Payment.products
+    if (Payment.Discount && Payment.Discount.Amount){
+      this.formPayment.get('Discount').patchValue(Payment.Discount.Amount)
+      this.discount = Payment.Discount.Amount
+    }
+    this.paymentType = Payment.PaymentType.toString()
+
+    if (Payment.PaymentType == 2){
+      this.formPayment.get('IdMonth').disable()
+      this.paymentDetail = Payment.products
+    }else{
+      this.formPayment.get('IdMonth').patchValue(Payment.MonthlyPayment.IdMonth)
+      this.formPayment.get('IdMonth').enable()
+      this.paymentDetail = Payment.levels
+    }
+    this.calculateTotals()
+    this.pendingAmountCheck(Payment.Amount)
   }
 
   createForm() {
@@ -96,12 +120,17 @@ export class PaymentCrudComponent implements OnInit {
       PaymentDate: new FormControl(''),
       Observation: new FormControl(''),
       UUID: new FormControl(''),
-      PaymentType: new FormControl('',[Validators.required]),
+      PaymentMethod: new FormControl('',[Validators.required]),
+      PaymentType: new FormControl(1, [Validators.required]),
       Reference: new FormControl(''),
       Create_at: new FormControl(''),
       Description: new FormControl('',[Validators.required]),
-      Status: new FormControl(1, [Validators.required])
+      Status: new FormControl(3, [Validators.required]),
+      IdMonth: new FormControl(null, [Validators.required]),
+      Discount: new FormControl(null),
     })
+    this.formPayment.controls['PaymentType'].setValue('1')
+    this.paymentType=1
   }
 
   async sendForm() {
@@ -109,14 +138,32 @@ export class PaymentCrudComponent implements OnInit {
     this.disableForm = true;
     if (this.formPayment.valid) {
       this.showLoader = true
+      this.formPayment.get('Status').enable()
       let data = this.formPayment.value
-      console.log(this.viewType);
+      let body: any = {}
+      body.payment = data
 
+      if(this.discount){
+        body.discount = data.Discount
+      }
+
+      if (data.PaymentType == 1) {
+        body.levels = this.paymentDetail
+      } else if (data.PaymentType == 2) {
+        body.products = this.paymentDetail
+      }
+
+      if(data.Amount<=0){
+        this.alert.error('Error en el monto', 'No puede registrar un pago en cero');
+        this.showLoader = false
+        return
+      }
       if (this.viewType == 'add') {
-        this._service.addPayment({ payment: data, products: this.paymentDetail }).subscribe(
+
+        this._service.addPayment(body).subscribe(
           async (res: any) => {
             this.alert.success('Registro Creado', 'Se ha creado el registro');
-            this.showLoader = false
+
             this.goBack()
           },
           e => {
@@ -127,11 +174,9 @@ export class PaymentCrudComponent implements OnInit {
         );
       } else {
         this.alert.success('Registro Actualizado', 'Se ha actualizado el registro');
-        this._service.updPayment({ payment: data, products: this.paymentDetail }).subscribe(
+        this._service.updPayment(body).subscribe(
           async (res: any) => {
-            // console.log(res);
-
-            // this.router.navigate([`/students`]);
+            this.formPayment.get('Status').disable()
             this.showLoader = false
           },
           e => {
@@ -175,17 +220,32 @@ export class PaymentCrudComponent implements OnInit {
     this.router.navigate([`admin/payments`]);
   }
 
-  validateCheck(product){
+  validateCheck(element){
     let found = null
-    found = this.paymentDetail.find(item => item.UUID == product.UUID)
+    found = this.paymentDetail.find(item => item.UUID == element.UUID)
     // console.log(found);
 
     return found? true:false
   }
 
-  totalUSD = 0
-  PaymentDescription = ''
-  productsOnPayments = []
+  onChangeStudent(){
+    this.showLoader = true
+    this._service.getLevelsbyStudents(this.formPayment.get('Student').value).subscribe((res: any) => {
+      // console.log(res)
+      // this.setFormPayment(res)
+      let result = res
+      this.paymentDetail=[]
+      // agrega los niveles que tiene inscritos al pago
+      result.forEach(e => {
+        let lvl = this.levels.find(item => item.UUID == e.UUID)
+        this.paymentDetail.push(lvl)
+        this.calculateTotals()
+      });
+      this.showLoader = false
+    })
+  }
+
+
   onCheckChange(event, product){
     console.log(product);
 
@@ -196,26 +256,57 @@ export class PaymentCrudComponent implements OnInit {
       this.paymentDetail = this.paymentDetail.filter(item => item.UUID != product.UUID)
     }
 
-    this.totalUSD = this.paymentDetail.reduce((sum, prod) => sum + prod.Amount, 0);
-
-    this.formPayment.get('Amount').patchValue(this.totalUSD)
-
-    this.PaymentDescription = this.paymentDetail.reduce((conc, prod)=> conc+' | '+prod.Description,'')
-
-    this.PaymentDescription = this.PaymentDescription.slice(0,99)
-
-    this.formPayment.get('Description').patchValue(this.PaymentDescription)
+    this.calculateTotals()
 
   }
-paymenType = ''
-onRadioChange(event) {
+  paymentMethod = ''
+  onRadioChange(event) {
 
-  // console.log(event.target.value);
-  this.paymenType = event.target.value
+    // console.log(event.target.value);
+    this.paymentMethod = event.target.value
 
-}
+  }
 
-validatorOfInput(nameInput: string): any {
+  paymentType = null
+  onRadioChangeLevels(evt){
+    this.paymentType = evt.target.value
+    this.paymentDetail=[]
+    if (this.paymentType == 2) {
+      this.formPayment.get('IdMonth').disable()
+    } else {
+      this.formPayment.get('IdMonth').enable()
+    }
+  }
+
+  LevelsOnPayments = []
+  onCheckChangeLevels(event, levels) {
+    console.log(levels);
+
+    if (event.target.checked) {
+      // Add a new control in the arrayForm
+      this.paymentDetail.push(levels);
+    } else {
+      this.paymentDetail = this.paymentDetail.filter(item => item.UUID != levels.UUID)
+    }
+
+    this.calculateTotals()
+    this.pendingAmountCheck()
+  }
+
+  calculateTotals(){
+    if (this.discount > this.totalUSD) {
+      this.deleteDiscount()
+    }
+    this.totalUSD = this.paymentDetail.reduce((sum, prod) => sum + prod.Amount, 0) - this.discount;
+
+    this.PaymentDescription = this.paymentDetail.reduce((conc, prod) => conc + ' | ' + prod.Description, '')
+
+    this.PaymentDescription = this.PaymentDescription.slice(0, 99)
+
+    this.formPayment.get('Description').patchValue(this.PaymentDescription)
+  }
+
+  validatorOfInput(nameInput: string): any {
     let input = this.formPayment.get(nameInput);
   // console.log(nameInput, input);
 
@@ -225,6 +316,11 @@ validatorOfInput(nameInput: string): any {
         ? true
         : false;
     let msg: string;
+
+    // if (nameInput =="IdMonth" ){
+    //   msg = 'Campo Requerido.';
+    //   return msg;
+    // }
 
     if (statusInvalid) {
       if (input.errors["required"]) {
@@ -249,5 +345,61 @@ validatorOfInput(nameInput: string): any {
     }
   }
 
+  pagoIncompleto = false
+  pendingAmount = 0
+  checkTotalStatus(evt){
+    console.log(evt.target.value);
+
+    this.formPayment.get('Status').disable()
+    if (this.totalUSD > evt.target.value){
+      this.pendingAmount = this.totalUSD - parseFloat(evt.target.value)
+      this.pagoIncompleto=true
+      this.formPayment.get('Status').patchValue(2)
+    } else if (this.totalUSD == evt.target.value){
+      this.formPayment.get('Status').patchValue(3)
+      this.pagoIncompleto = false
+    }
+  }
+
+  pendingAmountCheck(amount = null ){
+    if (amount == null){
+      amount = this.formPayment.get('Amount').value
+    }
+    if (this.totalUSD > amount) {
+      this.pendingAmount = this.totalUSD - amount
+      this.pagoIncompleto = true
+      this.formPayment.get('Status').patchValue(2)
+      this.formPayment.get('Status').disable()
+    } else {
+      this.pagoIncompleto = false
+      this.formPayment.get('Status').patchValue(3)
+      this.formPayment.get('Status').enable()
+    }
+  }
+
+  addDiscount(){
+    let disc = parseFloat(this.discountInput.nativeElement.value)
+    if(disc <= this.totalUSD){
+      this.discount = disc
+      this.formPayment.get('Discount').patchValue(disc)
+      this.calculateTotals()
+      let amount = this.formPayment.get('Amount').value
+      this.pendingAmountCheck(amount)
+
+      this.alert.success('Exito', 'Descuento agregado')
+    }else{
+      this.alert.error('Error','El monto del descuento no puede ser mayor al total')
+    }
+  }
+
+  deleteDiscount(){
+    this._service.deleteDiscount({uuid:this.uuid}).subscribe((res: any) => {
+      this.discount = 0
+      this.calculateTotals()
+      let amount = this.formPayment.get('Amount').value
+      this.pendingAmountCheck(amount)
+      this.alert.warning('Alerta', 'Descuento Eliminado')
+    })
+  }
 
 }

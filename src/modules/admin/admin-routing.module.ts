@@ -4,6 +4,7 @@ import { StudentsComponent } from '../students/components/students/students.comp
 import { PaymentsComponent } from '../payments/components/payments/payments.component';
 import { UsersComponent } from '../users/components/users/users.component';
 import { ProductComponent } from '../products/components/product/product.component';
+import { LevelComponent } from '../level/component/level/level.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,11 @@ const routes: Routes = [
     path: 'products',
     component: ProductComponent,
     children: [{ path: '', loadChildren: () => import('../products/products.module').then(m => m.ProductsModule) }]
+  },
+  {
+    path: 'levels',
+    component: LevelComponent,
+    children: [{ path: '', loadChildren: () => import('../level/level.module').then(m => m.LevelModule) }]
   },
 
 ];

@@ -39,6 +39,64 @@
           </div>
         </div>
       </div>
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Cursos Inscritos</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Costo</th>
+                  <th>Estatus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let level of levelsByStudent; index as i;">
+                  <td>{{i+1}}</td>
+                  <td>{{level.Name}}</td>
+                  <td><span>{{level.Amount}}</span></td>
+                  <td *ngIf="level.Status==1"><span class="badge badge-success">Activo</span></td>
+                  <td *ngIf="level.Status==2"><span class="badge badge-warning">Inactivo</span></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Pagos Realizados</h4>
+        </div>
+        <div class="card-body">
+          <div class="recent-comment m-t-15">
+            <div *ngFor="let pay of paymentsByStudents" class="media">
+              <div class="media-left">
+                <span *ngIf="pay.PaymentType==1"><i class="fa fa-calendar"></i></span>
+                <span *ngIf="pay.PaymentType==2"><i class="fa fa-money"></i></span>
+              </div>
+              <div class="media-body">
+                <!-- <span class="badge badge-success">Mensualidad</span> -->
+                <h4 *ngIf="pay.PaymentType==1" class="media-heading text-primary">Mensualidad</h4>
+                <h4 *ngIf="pay.PaymentType==2" class="media-heading text-success">Otros pagos</h4>
+                <p *ngIf="pay.PaymentType==1">{{pay.Name}}</p>
+                <p *ngIf="pay.PaymentType==2">{{pay.Description}}</p>
+                <p class="comment-date">{{pay.PaymentDate}}</p>
+                <span  *ngIf="pay.Status==1" class="badge badge-warning">Pendiente</span>
+                <span *ngIf="pay.Status==2" class="badge badge-danger">Abonado</span>
+                <span *ngIf="pay.Status==3" class="badge badge-success">completado</span>
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
     </div>
     <div class="col-lg-8">
       <div class="card">
