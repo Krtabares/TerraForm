@@ -12862,8 +12862,8 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     min-height: 250px;
     width: 100%; }
   .photo-content .profile-photo {
-    bottom: -75px;
-    left: 100px;
+    bottom: -35px;
+    left: 70px;
     max-width: 150px;
     position: absolute; }
 
