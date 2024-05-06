@@ -8236,7 +8236,7 @@ a {
     display: flex; }
     @media only screen and (max-width: 575px) {
       .header .header-content {
-        padding-left: 2.375rem; } }
+        padding-left: 23vw; } }
   .header .navbar {
     padding: 0;
     height: 100%;
