@@ -8,7 +8,7 @@ import { LayoutComunicationService } from '../../services/layout-comunication.se
 })
 export class SidebarComponent implements OnInit {
   showMenu = true
-
+  public getScreenWidth: any;
   constructor(private _comunicacionService: LayoutComunicationService) {
     this._comunicacionService.ToggleMenuEvent.subscribe((action) => {
       this.toggleMenu()
@@ -17,6 +17,9 @@ export class SidebarComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.getScreenWidth = window.innerWidth;
+    console.log("this.getScreenWidth", this.getScreenWidth);
+
   }
 
   toggleMenu(){

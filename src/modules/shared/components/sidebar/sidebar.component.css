@@ -7,6 +7,7 @@
   }
 
 
+
 @media (max-width: 800px) {
   .quixnav {
     /* width: 3.75rem; */
@@ -14,10 +15,14 @@
       position: absolute;
       /* left: -100%; */
       display: none;
+      max-width: 40vw;
   }
   .showMenu{
     /* left:0 !important */
     display: block;
+  }
+  #backdrop_sidebar{
+    z-index: 1 !important;
   }
   /* .quixnav .nav-text, .quixnav .metismenu .first{
     display: none;

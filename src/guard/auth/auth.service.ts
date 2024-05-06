@@ -39,6 +39,7 @@ export class AuthService {
   tokenDecode(token) {
     return this.http.post(environment.routerBase + '/auth/token/decode', { token: token })
   }
+
   getUser() {
     if (localStorage.getItem("current_user")) {
       this.user = JSON.parse(localStorage.getItem("current_user"));

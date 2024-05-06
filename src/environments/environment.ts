@@ -7,6 +7,7 @@ export const environment = {
   // routerBase: 'https://terraformapi-production.up.railway.app/api',
   routerBase: 'http://localhost:3000/api',
   routerImg: 'http://localhost:3000/images/',
+  verification: 'http://localhost:4200/verification/'
 };
 
 /*

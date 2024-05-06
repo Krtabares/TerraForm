@@ -217,7 +217,6 @@ export class LevelCrudComponent implements OnInit {
 
   selecteStudentUUID= null
   selectStudent(evt){
-    // console.log(evt);
     this.selecteStudentUUID = evt.target.value
   }
 

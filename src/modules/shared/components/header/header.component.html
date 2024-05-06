@@ -23,23 +23,31 @@
         ***********************************-->
 <div class="header">
   <div class="header-content">
-    <nav class="navbar navbar-expand">
+    <nav class="navbar navbar-expand ">
       <div class="collapse navbar-collapse justify-content-between">
         <div class="header-left">
-          <!-- <div class="search_bar dropdown">
-            <span class="search_icon p-3 c-pointer" data-toggle="dropdown">
-              <i class="mdi mdi-magnify"></i>
-            </span>
-            <div class="dropdown-menu p-0 m-0">
-              <form>
-                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-              </form>
-            </div>
-          </div> -->
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="javascript:void()" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <div class="profile-pic">
+                  <img [src]="imagenCompany" style="width: 50px;" alt="Profile Picture">
+                </div>
+                <!-- You can also use icon as follows: -->
+                <!--  <i class="fas fa-user"></i> -->
+              </a>
+            </li>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="javascript:void()">{{companyName}}</a>
+              </li>
+            </ul>
         </div>
 
+
+
         <ul class="navbar-nav header-right">
-          <li class="nav-item dropdown notification_dropdown">
+
+          <!-- <li class="nav-item dropdown notification_dropdown">
             <a class="nav-link" href="#" role="button" data-toggle="dropdown">
               <i class="mdi mdi-bell"></i>
               <div class="pulse-css"></div>
@@ -97,7 +105,7 @@
               </ul>
               <a class="all-notification" href="#">See all notifications <i class="ti-arrow-right"></i></a>
             </div>
-          </li>
+          </li> -->
           <li class="nav-item dropdown header-profile" (click)="toggleContextMenuProfile()">
             <a class="nav-link" href="javascript:void()" role="button" data-toggle="dropdown">
               <i class="mdi mdi-account"></i>

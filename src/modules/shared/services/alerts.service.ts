@@ -11,7 +11,7 @@ export class AlertService {
   optionsDefault = { positionClass: "toast-top-right" };
 
   success(title, msg, option?) {
-    console.log("llego ");
+    // console.log("llego ");
 
     if (option) {
       let newOptions = { ...this.optionsDefault, ...option };

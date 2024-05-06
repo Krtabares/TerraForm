@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/guard/auth/auth.service';
 import { LayoutComunicationService } from '../../services/layout-comunication.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -10,14 +11,25 @@ import { LayoutComunicationService } from '../../services/layout-comunication.se
 export class HeaderComponent implements OnInit {
   showContextMenuProfile = false
   showSidebarMenu = true
+  companyName = 'Nombre de academia'
+  imagenCompany = ''
 
   constructor(private auth: AuthService, private _comunicacionService: LayoutComunicationService ) { }
 
   ngOnInit(): void {
+    this.getInfo()
   }
 
   logOut() {
     this.auth.logOut();
+  }
+
+  getInfo(){
+    let user = this.auth.getUser()
+
+    this.companyName = (user.CompanyName) ? user.CompanyName: ''
+
+    this.imagenCompany = (user.CompanyImage)? environment.routerImg + user.CompanyImage:''
   }
 
   toggleContextMenuProfile(){

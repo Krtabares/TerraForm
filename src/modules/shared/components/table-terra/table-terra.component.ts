@@ -64,7 +64,7 @@ export class TableTerraComponent implements OnInit {
   ngOnInit(): void {
     this.colDefs = this.coldefArrays[this.idTable]
     // this.sizeToFit()
-    console.log(this.rowData);
+    // console.log(this.rowData);
 
   }
 

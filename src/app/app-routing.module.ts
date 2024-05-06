@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from 'src/modules/admin/admin/admin.component';
 import { LoginComponent } from 'src/modules/login/components/login/login.component';
 import { AuthGuard } from 'src/guard/auth/auth.guard';
+import { StudentVerificationComponent } from 'src/modules/student-verification/components/student-verification/student-verification.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin', pathMatch: 'full' },
@@ -17,6 +18,11 @@ const routes: Routes = [
     path: 'singin',
      component: LoginComponent,
     children: [{ path: '', loadChildren: () => import('../modules/login/login.module').then(m => m.LoginModule) }]
+  },
+  {
+    path: 'verification/:company/:uuid',
+    component: StudentVerificationComponent,
+    children: [{ path: '', loadChildren: () => import('../modules/student-verification/student-verification.module').then(m => m.StudentVerificationModule) }]
   }
 ];
 

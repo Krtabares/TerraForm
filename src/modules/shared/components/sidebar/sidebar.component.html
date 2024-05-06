@@ -130,3 +130,4 @@
 <!--**********************************
             Sidebar end
         ***********************************-->
+<div *ngIf="showMenu && (getScreenWidth < 801)" class="modal-backdrop show" id="backdrop_sidebar" (click)="toggleMenu()" ></div>

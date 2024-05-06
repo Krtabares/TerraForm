@@ -98,6 +98,8 @@ export class PaymentCrudComponent implements OnInit {
       this.formPayment.get('Discount').patchValue(Payment.Discount.Amount)
       this.discount = Payment.Discount.Amount
     }
+
+    this.paymentMethodEvaluate(Payment.PaymentMethod)
     this.paymentType = Payment.PaymentType.toString()
 
     if (Payment.PaymentType == 2){
@@ -153,11 +155,11 @@ export class PaymentCrudComponent implements OnInit {
         body.products = this.paymentDetail
       }
 
-      if(data.Amount<=0){
-        this.alert.error('Error en el monto', 'No puede registrar un pago en cero');
-        this.showLoader = false
-        return
-      }
+        // if(data.Amount<=0){
+        //   this.alert.error('Error en el monto', 'No puede registrar un pago en cero');
+        //   this.showLoader = false
+        //   return
+        // }
       if (this.viewType == 'add') {
 
         this._service.addPayment(body).subscribe(
@@ -245,7 +247,6 @@ export class PaymentCrudComponent implements OnInit {
     })
   }
 
-
   onCheckChange(event, product){
     console.log(product);
 
@@ -263,8 +264,17 @@ export class PaymentCrudComponent implements OnInit {
   onRadioChange(event) {
 
     // console.log(event.target.value);
-    this.paymentMethod = event.target.value
+    this.paymentMethodEvaluate(event.target.value)
 
+  }
+  paymentMethodEvaluate(value){
+    this.paymentMethod = value
+
+    if (this.paymentMethod == 'electronic') {
+      this.formPayment.get('Reference').enable()
+    } else {
+      this.formPayment.get('Reference').disable()
+    }
   }
 
   paymentType = null
@@ -280,7 +290,7 @@ export class PaymentCrudComponent implements OnInit {
 
   LevelsOnPayments = []
   onCheckChangeLevels(event, levels) {
-    console.log(levels);
+    // console.log(levels);
 
     if (event.target.checked) {
       // Add a new control in the arrayForm
@@ -316,11 +326,6 @@ export class PaymentCrudComponent implements OnInit {
         ? true
         : false;
     let msg: string;
-
-    // if (nameInput =="IdMonth" ){
-    //   msg = 'Campo Requerido.';
-    //   return msg;
-    // }
 
     if (statusInvalid) {
       if (input.errors["required"]) {

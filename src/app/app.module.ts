@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { httpInterceptorProviders } from 'src/modules/shared/helpers/terra-interceptor.interceptor';
+// import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { httpInterceptorProviders } from 'src/modules/shared/helpers/terra-inter
     AppRoutingModule,
     HttpClientModule,
     ToastrModule.forRoot(),
-
+    // QRCodeModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

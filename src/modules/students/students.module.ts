@@ -8,7 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StudentsCrudComponent } from './components/students-crud/students-crud.component';
 import { ToastrModule } from 'ngx-toastr';
-
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -21,6 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
     SharedModule,
     StudentsRoutingModule,
     ReactiveFormsModule,
+    QRCodeModule
     // ToastrModule
   ],
 })

@@ -49,6 +49,8 @@ export class TerraRequestInterceptor implements HttpInterceptor {
           return this.handle401Error(req, next);
         } else if (error instanceof HttpErrorResponse && error.status === 403){
           this.eventBusService.emit(new EventData('logout', null));
+        } if (error instanceof HttpErrorResponse && error.status === 400){
+          this.eventBusService.emit(new EventData('logout', null));
         }
 
         return throwError(() => error);

@@ -1,6 +1,8 @@
 @media (max-width: 800px) {
   .content-body{
     margin-left: 1px !important;
+    height: 90vh;
+    overflow: scroll;
   }
   .menuIsShow {
     margin-left: 1px !important;

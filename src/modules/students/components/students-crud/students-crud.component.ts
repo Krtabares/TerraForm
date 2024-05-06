@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StudentService } from '../../student.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,10 @@ import Swal from 'sweetalert2';
 import { WebcamImage } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/guard/auth/auth.service';
+import { LevelService } from 'src/modules/level/level.service';
+
+declare let html2canvas: any;
 
 @Component({
   selector: 'app-students-crud',
@@ -17,6 +21,7 @@ export class StudentsCrudComponent implements OnInit {
 
   // Formularios
   formStudent: FormGroup; // Formulario
+  formLevel: FormGroup;
   formHasBeenSave = false
   hasnewimage = false
   showLoader = true
@@ -29,13 +34,31 @@ export class StudentsCrudComponent implements OnInit {
   paymentsByStudents=[]
   selectedFile: File = null;
   imagePreview: string | ArrayBuffer = "https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg";
+  qrData
 
-  constructor(private _service: StudentService, private router: Router, private route: ActivatedRoute, private alert: AlertService) {
+  months = [
+    { IdMonth: 1, Amount: '', Status:1 },
+    { IdMonth: 2, Amount: '', Status:1 },
+    { IdMonth: 3, Amount: '', Status:1 },
+    { IdMonth: 4, Amount: '', Status:1 },
+    { IdMonth: 5, Amount: '', Status:1 },
+    { IdMonth: 6, Amount: '', Status:1 },
+    { IdMonth: 7, Amount: '', Status:1 },
+    { IdMonth: 8, Amount: '', Status:1 },
+    { IdMonth: 9, Amount: '', Status:1 },
+    { IdMonth: 10, Amount: '', Status:1 },
+    { IdMonth: 11, Amount: '', Status:1 },
+    { IdMonth: 12, Amount: '', Status:1 },
+  ]
+
+  constructor(private _service: StudentService, private __levelServ: LevelService, private router: Router, private route: ActivatedRoute, private alert: AlertService, private auth: AuthService) {
     this.createForm()
     this.subscribeChangeForm()
   }
 
   ngOnInit(): void {
+    console.log(window.location.origin);
+
     this.showLoader = true
     this.route.params.subscribe(params => {
       this.uuid = params['uuid']
@@ -44,11 +67,17 @@ export class StudentsCrudComponent implements OnInit {
         this.viewType = 'edit'
         this.loadStudent()
         this.btnlabel = "Guardar"
-
+        this.qrData = environment.verification+this.auth.getUser().company+'/'+this.uuid
       }else{
         this.showLoader = false
       }
+      this.loadSelects()
     });
+  }
+
+  ngOnDestroy(): void {
+
+
   }
 
   subscribeChangeForm() {
@@ -61,14 +90,50 @@ export class StudentsCrudComponent implements OnInit {
   loadStudent() {
     this.showLoader = true
       this._service.getStudentsByUuid(this.uuid).subscribe((res:any)=>{
-        // console.log(res)
+        console.log(res)
         let result = res
         this.setFormStudent(result.student)
         this.levelsByStudent = result.levels
         this.paymentsByStudents = result.payments
+        this.checkMonthPayment()
         this.showLoader = false
       })
 
+  }
+
+  loadSelects(){
+    this.showLoader = true
+    this._service.getResources().subscribe((res: any) => {
+      console.log(res)
+      let result = res
+      this.LevelSelectAux = res
+      this.filterLevelsRegistred()
+      this.showLoader = false
+    })
+  }
+  levelSelect=[]
+  LevelSelectAux =[]
+  filterLevelsRegistred() {
+    this.levelSelect = this.LevelSelectAux.filter((level) => {
+      return !this.levelsByStudent.some((resgistrered) => resgistrered.UUID === level.UUID);
+    });
+  }
+
+  selecteLevelUUID = null
+  selectLevel(evt) {
+    this.selecteLevelUUID = evt.target.value
+  }
+
+  registreLevel() {
+    this.showLoader = true
+    this.__levelServ.registrationStudent({ student: this.uuid, level: this.selecteLevelUUID, getLevelsByStudents:true }).subscribe((res: any) => {
+      this.alert.success("Inscripcion", "la inscripcion fue exitosa")
+      // console.log(res);
+      this.levelsByStudent = res
+      this.filterLevelsRegistred()
+      this.toggleModal()
+      this.showLoader = false
+    })
   }
 
   setFormStudent(student) {
@@ -107,9 +172,10 @@ export class StudentsCrudComponent implements OnInit {
       UUID: new FormControl(''),
       base64Data: new FormControl(null)
     })
+    this.formLevel = new FormGroup({
+      UUID: new FormControl('')
+    })
   }
-
-
 
   async sendForm() {
     this.formHasBeenSave = true;
@@ -121,7 +187,7 @@ export class StudentsCrudComponent implements OnInit {
 
 
       if(this.viewType == 'add'){
-        this._service.addStudent({ student: data}).subscribe(
+        this._service.addStudent({ student: data, hasnewimage: this.hasnewimage }).subscribe(
           async (res: any) => {
             this.alert.success('Registro Creado', 'Se ha creado el registro');
             this.showLoader = false
@@ -181,7 +247,49 @@ export class StudentsCrudComponent implements OnInit {
   }
 
   goBack(){
+
+    if (
+      (this.formStudent.dirty || this.hasnewimage ) && !this.formHasBeenSave
+    ) {
+      Swal.fire({
+        title: 'Cambios sin guardar',
+        text: 'Algunos cambios no fueron guardados, ¿Deseas Guardarlos?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Guardar!',
+        cancelButtonText: 'Cancelar',
+      }).then(e => {
+        if (e.isConfirmed) {
+          this.sendForm();
+        }
+      });
+    }
     this.router.navigate([`admin/students`]);
+  }
+
+  gotoPayment(){
+    if (
+      (this.formStudent.dirty || this.hasnewimage) && !this.formHasBeenSave
+    ) {
+      Swal.fire({
+        title: 'Cambios sin guardar',
+        text: 'Algunos cambios no fueron guardados, ¿Deseas Guardarlos?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Guardar!',
+        cancelButtonText: 'Cancelar',
+      }).then(e => {
+        if (e.isConfirmed) {
+          this.sendForm();
+        }
+      });
+    }
+    this.router.navigate([`admin/students`]);
+
   }
 
   onFileSelected(event) {
@@ -244,5 +352,68 @@ export class StudentsCrudComponent implements OnInit {
     }
   }
 
+  showModal = false
+  toggleModal() {
+    this.showModal = !this.showModal
+  }
+
+  checkMonthPayment(){
+
+    let  monthlypayments = this.paymentsByStudents.filter(pay => { return pay.PaymentType == 1 })
+
+    this.months.forEach(m => {
+      const pay = monthlypayments.find(month => { return month.IdMonth == m.IdMonth })
+      if (pay){
+        m.Amount = pay.Amount
+        m.Status = pay.Status
+      }
+    });
+
+  }
+
+  capturedImage
+  @ViewChild('capture', { static: true }) capture: ElementRef;
+  shareQR(){
+    console.log("llego");
+    console.log(this.capture);
+
+    html2canvas(this.capture.nativeElement).then(canvas => {
+      console.log("html2canvas");
+      this.capturedImage = canvas.toDataURL();
+      console.log("capturedImage");
+      console.log("canvas.toDataURL() -->" + this.capturedImage);
+      if (navigator.share) {
+        // Enable the Web Share API button
+        // const shareButton = document.getElementById('shareButton');
+        // shareButton.addEventListener('click', () => {
+          let file = this.dataURLtoFile(this.capturedImage, "QrTerraForm.jpg")
+          navigator.share({
+            title: 'Awesome Content',
+            text: 'Check out this awesome content!',
+            url: 'https://example.com',
+            files: [file]
+          })
+            .then(() => console.log('Shared successfully'))
+            .catch((error) => console.error('Sharing failed:', error));
+        // });
+      } else {
+        // If Web Share API is not supported, hide the button
+        // const shareButton = document.getElementById('shareButton');
+        // shareButton.style.display = 'none';
+      }
+    });
+  }
+
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[arr.length - 1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
 
 }

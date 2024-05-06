@@ -10,13 +10,16 @@
       <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
       <li class="breadcrumb-item active"><a href="javascript:void(0)">Validation</a></li>
     </ol> -->
+    <button (click)="toggleTable()" class="btn btn-success btn-sl-sm mr-3" type="button"><span class="mr-2"><i
+          class="fa fa-plus"></i></span>
+      pagos mensuales</button>
     <button (click)="goToAdd()" class="btn btn-primary btn-sl-sm mr-3" type="button"><span class="mr-2"><i
           class="fa fa-plus"></i></span>
       Nuevo registro</button>
   </div>
 </div>
 
-<div class="row">
+<div *ngIf="!showMonthlyPaymentOverview" class="row">
   <div class="col-lg-3 col-sm-6">
     <div class="card">
       <div class="stat-widget-two card-body">
@@ -78,7 +81,7 @@
 </div>
 
 
-<div class="row">
+<div *ngIf="!showMonthlyPaymentOverview" class="row">
 
   <div class="col-12">
     <div class="card">
@@ -93,6 +96,46 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div *ngIf="showMonthlyPaymentOverview" class="row">
+  <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Relacion de Pagos Mensuales</h4>
+            </div>
+            <div class="card-body" style="overflow: scroll;">
+              <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th style="text-align: center; white-space: nowrap;">Nombre</th>
+                    <th style="text-align: center;">Ene</th>
+                    <th style="text-align: center;">Feb</th>
+                    <th style="text-align: center;">Mar</th>
+                    <th style="text-align: center;">Abr</th>
+                    <th style="text-align: center;">May</th>
+                    <th style="text-align: center;">Jun</th>
+                    <th style="text-align: center;">Jul</th>
+                    <th style="text-align: center;">Ago</th>
+                    <th style="text-align: center;">Sep</th>
+                    <th style="text-align: center;">Oct</th>
+                    <th style="text-align: center;">Nov</th>
+                    <th style="text-align: center;">Dic</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let student of StudentsMonths" >
+                    <td style="white-space: nowrap;">{{student.Name}}</td>
+                    <td *ngFor="let m of student.payments"
+                      style="text-align: center; white-space: nowrap; {{m.Status==3? 'background-color: #7ED321;': (m.Status==2?'background-color: #d32121;' :'background-color: #f2f2f2;')}}">
+                      {{m.Amount}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
   </div>
 </div>
 

@@ -1,0 +1,196 @@
+
+  <div class="content-body ">
+    <div class="container-fluid pt-4">
+      <div *ngIf="student">
+         <div class="row">
+           <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="profile">
+                  <div class="profile-head">
+                    <div class="photo-content row">
+                      <div class="cover-photo"></div>
+                      <div class="profile-photo">
+                        <img [src]="imagePreview" width="150" height="150" class=" rounded-circle" alt="">
+                      </div>
+                    </div>
+                    <div class="profile-info">
+                      <div class="row justify-content-center">
+                        <div class="col-xl-8">
+                          <div class="row">
+                            <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                              <div class="profile-name">
+                                <h4 class="text-primary">{{student.Name}}</h4>
+                                <p>{{student.Gender}}</p>
+                              </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                              <div class="profile-call">
+                                <h4 class="text-muted">{{student.PhoneNumber}}</h4>
+                                <p>Telefono</p>
+                              </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                              <div class="profile-email">
+                                <h4 class="text-muted">{{student.Birthdate}}</h4>
+                                <p>Fecha de nacimiento</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                                <div *ngIf="student.LegalRepresentative" class="profile-name">
+                                  <h4 class="text-primary">{{student.LegalRepresentative}}</h4>
+                                  <p>Representante</p>
+                                </div>
+                              </div>
+                              <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                                <div *ngIf="student.PhoneNumberLegalRepresentative" class="profile-call">
+                                  <h4 class="text-muted">{{student.PhoneNumberLegalRepresentative}}</h4>
+                                  <p>Telefono de Representante</p>
+                                </div>
+                              </div>
+                              <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                                <div class="profile-call">
+                                  <!-- <h4 class="text-muted">{{student.Status}}</h4> -->
+                                  <td *ngIf="student.Status==1"><span class="badge badge-success">Activo</span></td>
+                                  <td *ngIf="student.Status==2"><span class="badge badge-warning">Inactivo</span></td>
+                                  <p>Estatus</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-xl-6 col-sm-6 border-right-1 prf-col">
+                              <div class="profile-email">
+                                <h4 class="text-muted">{{student.Direction}}</h4>
+                                <p>Dirección</p>
+                              </div>
+                            </div>
+                            <div class="col-xl-6 col-sm-6 border-right-1 prf-col">
+                              <div *ngIf="student.Observation" class="profile-email">
+                                <h4 class="text-muted">{{student.Observation}}</h4>
+                                <p>Observaciones</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           </div>
+         </div>
+
+
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Cursos Inscritos</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table mb-0">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre</th>
+                      <th>Costo</th>
+                      <th>Estatus</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let level of levelsByStudent; index as i;">
+                      <td>{{i+1}}</td>
+                      <td>{{level.Name}}</td>
+                      <td><span>{{level.Amount}}</span></td>
+                      <td *ngIf="level.Status==1"><span class="badge badge-success">Activo</span></td>
+                      <td *ngIf="level.Status==2"><span class="badge badge-warning">Inactivo</span></td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Pagos Realizados</h4>
+            </div>
+            <div class="card-body"  style=" max-height: 55vh; overflow-x: scroll;" >
+              <div class="recent-comment m-t-15">
+                <div *ngFor="let pay of paymentsByStudents" class="media">
+                  <div class="media-left">
+                    <span *ngIf="pay.PaymentType==1"><i class="fa fa-calendar"></i></span>
+                    <span *ngIf="pay.PaymentType==2"><i class="fa fa-money"></i></span>
+                  </div>
+                  <div class="media-body">
+                    <!-- <span class="badge badge-success">Mensualidad</span> -->
+                    <h4 *ngIf="pay.PaymentType==1" class="media-heading text-primary">Mensualidad</h4>
+                    <h4 *ngIf="pay.PaymentType==2" class="media-heading text-success">Otros pagos</h4>
+                    <p *ngIf="pay.PaymentType==1">{{pay.Name}}</p>
+                    <p *ngIf="pay.PaymentType==2">{{pay.Description}}</p>
+                    <p class="comment-date">{{pay.PaymentDate}}</p>
+                    <span *ngIf="pay.Status==1" class="badge badge-warning">Pendiente</span>
+                    <span *ngIf="pay.Status==2" class="badge badge-danger">Abonado</span>
+                    <span *ngIf="pay.Status==3" class="badge badge-success">completado</span>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="viewType != 'add'" class="card">
+            <div class="card-header">
+              <h4 class="card-title">Relacion de Pagos Mensuales</h4>
+            </div>
+            <div class="card-body" style="overflow: scroll;">
+              <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th style="text-align: center;">Ene</th>
+                    <th style="text-align: center;">Feb</th>
+                    <th style="text-align: center;">Mar</th>
+                    <th style="text-align: center;">Abr</th>
+                    <th style="text-align: center;">May</th>
+                    <th style="text-align: center;">Jun</th>
+                    <th style="text-align: center;">Jul</th>
+                    <th style="text-align: center;">Ago</th>
+                    <th style="text-align: center;">Sep</th>
+                    <th style="text-align: center;">Oct</th>
+                    <th style="text-align: center;">Nov</th>
+                    <th style="text-align: center;">Dic</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td *ngFor="let m of months"
+                      style="text-align: center; {{m.Status==3? 'background-color: #7ED321;': (m.Status==2?'background-color: #d32121;' :'background-color: #f2f2f2;')}}">
+                      {{m.Amount}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-header">
+              qr
+            </div>
+            <div class="card-body">
+            <div class="qrcodeImage d-flex justify-content-center">
+              <qrcode [qrdata]="qrData" [allowEmptyString]="true" [ariaLabel]="'QR Code image with the following content...'"
+                    [colorDark]="'#3f51b5'" [colorLight]="'#000000'" [elementType]="'canvas'" [errorCorrectionLevel]="'M'"
+                [imageSrc]="'assets/images/logo cuadrado.png'" [imageHeight]="90" [imageWidth]="90" [margin]="4" [scale]="1"
+                [title]="qrData" [width]="300"></qrcode>
+            </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>

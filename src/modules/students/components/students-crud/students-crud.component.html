@@ -17,7 +17,205 @@
 </div>
 <form class="form-valide" [formGroup]="formStudent">
 <div class="row">
+    <div class="col-lg-8">
+      <!-- Informacion personal -->
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Informacion Personal</h4>
+        </div>
+        <div class="card-body">
+          <div class="form-validation">
+            <div class="row">
+              <div class="col-sm-12 col-lg-6  col-md-6">
+                <div class="form-group">
+                  <label for="Name">Nombre
+                    <span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" id="Name" name="Name" formControlName="Name"
+                    placeholder="Ingresa Nombre">
+                  <div class="invalid-feedback">
+                    {{ validatorOfInput('Name') }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-lg-6  col-md-6">
+                <div class="form-group ">
+                  <label for="CI">CI
+                  </label>
+                  <input type="text" class="form-control" id="CI" name="CI" formControlName="CI" placeholder="CI..">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-lg-6  col-md-6">
+                <div class="form-group ">
+                  <label for="Birthdate">Fecha de Nacimiento
+                    <span class="text-danger">*</span>
+                  </label>
+
+                  <input type="date" class="form-control" id="Birthdate" name="Birthdate" placeholder=" dd/mm/yyyy"
+                    formControlName="Birthdate">
+                  <div class="invalid-feedback">
+                    {{ validatorOfInput('Birthdate') }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-lg-6  col-md-6">
+                <div class="form-group ">
+                  <label for="Gender">Genero
+                    <span class="text-danger">*</span>
+                  </label>
+
+                  <select class="form-control" id="Gender" name="Gender" formControlName="Gender">
+                    <option value="">Please select</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    {{ validatorOfInput('Gender') }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="mb-4">
+            <h4 class="mb-3">Informacion de Contacto</h4>
+            <div class="row">
+              <div class="col">
+                <div class="form-group ">
+                  <label for="PhoneNumber">Telefono
+                  </label>
+
+                  <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" formControlName="PhoneNumber"
+                    placeholder="..telefono!">
+
+                </div>
+              </div>
+            </div>
+            <hr class="mb-4">
+            <h4 class="mb-3">Informacion de Representante</h4>
+            <div class="row">
+              <div class="col-sm-12 col-lg-6  col-md-6">
+                <div class="form-group ">
+                  <label for="LegalRepresentative">Representante Legal
+
+                  </label>
+
+                  <input type="LegalRepresentative" class="form-control" id="LegalRepresentative" name="LegalRepresentative"
+                    formControlName="LegalRepresentative" placeholder="Representante.">
+
+                </div>
+              </div>
+              <div class="col-sm-12 col-lg-6  col-md-6">
+                <div class="form-group ">
+                  <label for="PhoneNumberLegalRepresentative">Telefono Representante Legal
+
+                  </label>
+
+                  <input type="PhoneNumberLegalRepresentative" class="form-control" id="PhoneNumberLegalRepresentative"
+                    name="PhoneNumberLegalRepresentative" formControlName="PhoneNumberLegalRepresentative"
+                    placeholder=" Telefono Representante.">
+
+                </div>
+              </div>
+            </div>
+            <hr class="mb-4">
+            <h4 class="mb-3">Otros Datos</h4>
+            <div class="row">
+              <div class="col">
+                <div class="form-group ">
+                  <label for="Direction">Direción
+
+                  </label>
+
+                  <input type="text" class="form-control" id="Direction" name="Direction" placeholder=" calle casa etc"
+                    formControlName="Direction">
+
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-lg-12  col-md-12mb-3">
+                <div class="form-group">
+                  <label>Observaciones</label>
+                  <textarea class="form-control" rows="5" placeholder="Observaciones"
+                    formControlName="Observation"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- <div class="col-sm-12 col-lg-12  col-md-12">
+                      <div class="form-group ">
+                        <label  for="Observation">Observation
+
+                        </label>
+
+                          <input type="text" class="form-control" id="Observation" name="Observation" formControlName="Observation"
+                            placeholder="alergias, condiciones, etc">
+
+                      </div>
+                  </div> -->
+              <div class="col">
+                <div class="form-group ">
+                  <label for="Status">Estado
+                    <span class="text-danger">*</span>
+                  </label>
+
+                  <select class="form-control" id="Status" name="Status" formControlName="Status">
+                    <option value="">Please select</option>
+                    <option value="1">Activo</option>
+                    <option value="2">inactivo</option>
+                  </select>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col d-flex justify-content-end">
+                <button type="button" class="btn btn-primary" (click)="sendForm()">{{btnlabel}}</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- Pagos Mensuales -->
+      <div *ngIf="viewType != 'add'" class="card">
+        <div class="card-header">
+          <h4 class="card-title">Relacion de Pagos Mensuales</h4>
+        </div>
+        <div class="card-body" style="overflow: scroll;">
+          <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th style="text-align: center;">Ene</th>
+                <th style="text-align: center;">Feb</th>
+                <th style="text-align: center;">Mar</th>
+                <th style="text-align: center;">Abr</th>
+                <th style="text-align: center;">May</th>
+                <th style="text-align: center;">Jun</th>
+                <th style="text-align: center;">Jul</th>
+                <th style="text-align: center;">Ago</th>
+                <th style="text-align: center;">Sep</th>
+                <th style="text-align: center;">Oct</th>
+                <th style="text-align: center;">Nov</th>
+                <th style="text-align: center;">Dic</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td *ngFor="let m of months"
+                  style="text-align: center; {{m.Status==3? 'background-color: #7ED321;': (m.Status==2?'background-color: #d32121;' :'background-color: #f2f2f2;')}}">
+                  {{m.Amount}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <div class="col-lg-4">
+      <!-- FOTO -->
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Foto</h4>
@@ -39,9 +237,13 @@
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-header">
+      <!-- cursos -->
+      <div *ngIf="viewType != 'add'" class="card">
+        <div class="card-header justify-content-center">
           <h4 class="card-title">Cursos Inscritos</h4>
+          <button *ngIf="viewType == 'edit'" (click)="toggleModal()" class="btn btn-primary btn-sl-sm mr-3" type="button"><span
+              class="mr-2"><i class="fa fa-check"></i></span>
+            Inscribir curso</button>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -68,11 +270,15 @@
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-header">
+      <!-- Pagos -->
+      <div  *ngIf="viewType != 'add'" class="card">
+        <div class="card-header justify-content-center">
           <h4 class="card-title">Pagos Realizados</h4>
+          <button *ngIf="viewType == 'edit'" (click)="gotoPayment()" class="btn btn-primary btn-sl-sm mr-3" type="button"><span
+              class="mr-2"><i class="fa fa-money"></i></span>
+            Registar pago</button>
         </div>
-        <div class="card-body">
+        <div class="card-body" style=" max-height: 55vh; overflow-x: scroll;">
           <div class="recent-comment m-t-15">
             <div *ngFor="let pay of paymentsByStudents" class="media">
               <div class="media-left">
@@ -97,170 +303,57 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-lg-8">
-      <div class="card">
+      <!-- QR -->
+      <div [hidden]="!qrData" class="card">
         <div class="card-header">
-          <h4 class="card-title">Informacion Personal</h4>
+          QR Informacion
         </div>
-        <div class="card-body">
-          <div class="form-validation">
-            <div class="row">
-              <div class="col-sm-12 col-lg-6  col-md-6" >
-                <div class="form-group">
-                  <label for="Name" >Nombre
-                    <span class="text-danger">*</span>
-                  </label>
-                    <input type="text" class="form-control" id="Name" name="Name" formControlName="Name"
-                      placeholder="Ingresa Nombre">
-                    <div class="invalid-feedback">
-                      {{ validatorOfInput('Name') }}
-                    </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-lg-6  col-md-6">
-                <div class="form-group ">
-                  <label  for="CI">CI
-                  </label>
-                    <input type="text" class="form-control" id="CI" name="CI" formControlName="CI"
-                      placeholder="CI..">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-lg-6  col-md-6">
-                  <div class="form-group ">
-                    <label for="Birthdate">Fecha de Nacimiento
-                      <span class="text-danger">*</span>
-                    </label>
-
-                    <input type="date" class="form-control" id="Birthdate" name="Birthdate" placeholder=" dd/mm/yyyy"
-                      formControlName="Birthdate">
-                    <div class="invalid-feedback">
-                      {{ validatorOfInput('Birthdate') }}
-                    </div>
-                  </div>
-              </div>
-              <div class="col-sm-12 col-lg-6  col-md-6">
-                <div class="form-group ">
-                  <label for="Gender">Genero
-                    <span class="text-danger">*</span>
-                  </label>
-
-                    <select class="form-control" id="Gender" name="Gender" formControlName="Gender">
-                      <option value="">Please select</option>
-                      <option value="Masculino">Masculino</option>
-                      <option value="Femenino">Femenino</option>
-                    </select>
-                    <div class="invalid-feedback">
-                      {{ validatorOfInput('Gender') }}
-                    </div>
-                </div>
-              </div>
-            </div>
-            <hr class="mb-4">
-            <h4 class="mb-3">Informacion de Contacto</h4>
-            <div class="row">
-              <div class="col">
-                  <div class="form-group ">
-                    <label for="PhoneNumber">Telefono
-                    </label>
-
-                    <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" formControlName="PhoneNumber"
-                      placeholder="..telefono!">
-
-                  </div>
-              </div>
-            </div>
-            <hr class="mb-4">
-            <h4 class="mb-3">Informacion de Representante</h4>
-            <div class="row">
-              <div class="col-sm-12 col-lg-6  col-md-6">
-                  <div class="form-group ">
-                    <label for="LegalRepresentative">Representante Legal
-
-                    </label>
-
-                      <input type="LegalRepresentative" class="form-control" id="LegalRepresentative" name="LegalRepresentative"
-                        formControlName="LegalRepresentative" placeholder="Representante.">
-
-                  </div>
-              </div>
-              <div class="col-sm-12 col-lg-6  col-md-6">
-                  <div class="form-group ">
-                    <label  for="PhoneNumberLegalRepresentative">Telefono Representante Legal
-
-                    </label>
-
-                      <input type="PhoneNumberLegalRepresentative" class="form-control" id="PhoneNumberLegalRepresentative"
-                        name="PhoneNumberLegalRepresentative" formControlName="PhoneNumberLegalRepresentative"
-                        placeholder=" Telefono Representante.">
-
-                  </div>
-              </div>
-            </div>
-            <hr class="mb-4">
-            <h4 class="mb-3">Otros Datos</h4>
-            <div class="row">
-              <div class="col">
-                  <div class="form-group ">
-                    <label  for="Direction">Direción
-
-                    </label>
-
-                      <input type="text" class="form-control" id="Direction" name="Direction" placeholder=" calle casa etc"
-                        formControlName="Direction">
-
-                  </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-lg-12  col-md-12mb-3">
-                <div class="form-group">
-                  <label>Observaciones</label>
-                  <textarea class="form-control" rows="5" placeholder="Observaciones" formControlName="Observation"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <!-- <div class="col-sm-12 col-lg-12  col-md-12">
-                  <div class="form-group ">
-                    <label  for="Observation">Observation
-
-                    </label>
-
-                      <input type="text" class="form-control" id="Observation" name="Observation" formControlName="Observation"
-                        placeholder="alergias, condiciones, etc">
-
-                  </div>
-              </div> -->
-              <div class="col">
-                <div class="form-group ">
-                  <label  for="Status">Estado
-                    <span class="text-danger">*</span>
-                  </label>
-
-                    <select class="form-control" id="Status" name="Status" formControlName="Status">
-                      <option value="">Please select</option>
-                      <option value="1">Activo</option>
-                      <option value="2">inactivo</option>
-                    </select>
-
-                </div>
-              </div>
-            </div>
-
-              <div class="form-group row">
-                <div class="col d-flex justify-content-end">
-                  <button type="button" class="btn btn-primary" (click)="sendForm()">{{btnlabel}}</button>
-                </div>
-              </div>
-
+        <div class="card-body" >
+          <div #capture class="qrcodeImage d-flex justify-content-center">
+            <qrcode   [qrdata]="qrData" [allowEmptyString]="true" [ariaLabel]="'QR Code image with the following content...'"
+              [colorDark]="'#3f51b5'" [colorLight]="'#000000'" [elementType]="'canvas'" [errorCorrectionLevel]="'M'"
+              [imageSrc]="'assets/images/logo cuadrado.png'" [imageHeight]="90" [imageWidth]="90" [margin]="4" [scale]="1"
+              [title]="qrData" [width]="300"></qrcode>
           </div>
+          <button type="button" class="btn btn-primary btn-sl-sm mr-3" (click)="shareQR()">compartir</button>
         </div>
       </div>
     </div>
+
+
   </div>
 </form>
+
+<div *ngIf="showModal" class="modal fade show" id="exampleModalCenter" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true" style="padding-right: 15px; display: block;">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Inscribir Curso</h5>
+        <button type="button" class="close" (click)="toggleModal()" data-dismiss="modal"><span>×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-valide" [formGroup]="formLevel">
+          <div class="mb-3">
+            <label for="Student">Curso</label>
+            <select class="custom-select d-block w-100" id="Student" (change)="selectLevel($event)" required=""
+              formControlName="UUID">
+              <option value="" selected>Elegir...</option>
+              <option *ngFor="let level of levelSelect" [value]="level.UUID">{{level.Name}}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="toggleModal()" data-dismiss="modal">Cerrar</button>
+        <button *ngIf="!errorDevice" type="button" (click)="registreLevel()"
+          class="btn btn-primary">Registrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModal" class="modal-backdrop fade show"></div>
 
 <app-loader [showLoader]="showLoader"></app-loader>

@@ -128,10 +128,10 @@
               <div *ngIf="paymentMethod=='electronic'" class="row">
                 <div class="col-md-12 mb-3">
                   <label for="cc-name">Referencia</label>
-                  <input type="text" class="form-control" id="cc-name" placeholder="" required="">
+                  <input type="text" class="form-control" id="cc-name" formControlName="Reference" placeholder="" required="">
                   <small class="text-muted">Agregar referencia</small>
                   <div class="invalid-feedback">
-                    reference is required
+                  {{ validatorOfInput('Reference') }}
                   </div>
                 </div>
               </div>

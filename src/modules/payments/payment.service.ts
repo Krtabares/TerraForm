@@ -11,6 +11,11 @@ export class PaymentService extends GlobalService {
     this.prepareTokenHeader();
     return this.http.get(environment.routerBase + `/payments/list`, { headers: this.headers });
   }
+
+  getPaymentsMonthlyPaymentOverview() {
+    this.prepareTokenHeader();
+    return this.http.get(environment.routerBase + `/payments/MonthlyPaymentOverview`, { headers: this.headers });
+  }
   addPayment(data) {
     this.prepareTokenHeader();
     return this.http.post(environment.routerBase + '/payments/new', data, { headers: this.headers });

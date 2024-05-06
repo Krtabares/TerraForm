@@ -20,10 +20,13 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
+    "@ng-select/ng-select": "^12.0.7",
     "ag-grid-angular": "^31.2.0",
     "ag-grid-community": "31.2.0",
+    "angularx-qrcode": "14.0.0",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.3.3",
+    "html2canvas": "^1.4.1",
     "jquery": "^3.7.1",
     "moment": "^2.29.4",
     "ngx-cookie-service": "^17.1.0",
@@ -33,6 +36,7 @@
     "select2": "^4.0.13",
     "sweetalert2": "^11.4.35",
     "tslib": "^2.3.0",
+    "v9": "^2.0.5",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

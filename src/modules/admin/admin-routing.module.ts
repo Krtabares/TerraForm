@@ -5,8 +5,13 @@ import { PaymentsComponent } from '../payments/components/payments/payments.comp
 import { UsersComponent } from '../users/components/users/users.component';
 import { ProductComponent } from '../products/components/product/product.component';
 import { LevelComponent } from '../level/component/level/level.component';
+import { HomeAdminComponent } from '../home-admin/components/home-admin/home-admin.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: HomeAdminComponent
+  },
   {
     path: 'students',
     component: StudentsComponent,
